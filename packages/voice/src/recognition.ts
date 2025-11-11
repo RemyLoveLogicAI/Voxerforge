@@ -191,7 +191,7 @@ export class VoiceCommandProcessor {
   processTranscript(transcript: string, confidence: number): VoiceCommand | null {
     const normalizedTranscript = transcript.trim();
 
-    for (const [command, pattern] of this.commandPatterns) {
+    for (const [, pattern] of this.commandPatterns) {
       const match = normalizedTranscript.match(pattern);
       if (match) {
         return {

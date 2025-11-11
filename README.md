@@ -63,7 +63,7 @@ voxforge-ide/
 ### Prerequisites
 
 - Node.js >= 18.0.0
-- npm >= 9.0.0
+- pnpm >= 8.0.0 (recommended) or npm >= 9.0.0
 
 ### Installation
 
@@ -72,12 +72,17 @@ voxforge-ide/
 git clone https://github.com/RemyLoveLogicAI/Voxerforge.git
 cd Voxerforge
 
+# Install pnpm if not already installed
+npm install -g pnpm
+
 # Install dependencies
-npm install
+pnpm install
 
 # Start development
-npm run dev
+pnpm run dev
 ```
+
+> **Note**: This project uses pnpm workspaces. While npm can be used, pnpm is recommended for better workspace support.
 
 ### Platform-Specific Development
 

@@ -69,16 +69,20 @@ export abstract class AIAssistant {
 export class MockAIAssistant extends AIAssistant {
   async generateCompletion(context: CodeContext, prompt: string): Promise<string> {
     // Simulate AI response
-    return `// AI-generated code based on: ${prompt}\nfunction example() {\n  // Implementation\n}`;
+    const lang = context.language;
+    return `// AI-generated code based on: ${prompt}\n// Language: ${lang}\nfunction example() {\n  // Implementation\n}`;
   }
 
   async explainCode(context: CodeContext): Promise<string> {
-    return `This code in ${context.language} appears to define functionality for ${context.fileName || 'your file'}. The implementation handles the core logic and returns the expected results.`;
+    const lang = context.language;
+    const file = context.fileName || 'your file';
+    return `This code in ${lang} appears to define functionality for ${file}. The implementation handles the core logic and returns the expected results.`;
   }
 
   async suggestRefactoring(context: CodeContext): Promise<string[]> {
+    const lang = context.language;
     return [
-      'Extract method for better code organization',
+      `Extract method for better code organization in ${lang}`,
       'Use more descriptive variable names',
       'Add error handling',
       'Consider using async/await pattern'
@@ -93,7 +97,9 @@ export class MockAIAssistant extends AIAssistant {
   }
 
   async chat(message: string, history?: Array<{ role: string; content: string }>): Promise<string> {
-    return `I understand you're asking about: "${message}". As an AI coding assistant, I can help with code generation, explanation, debugging, and refactoring. What would you like me to do?`;
+    const hasHistory = history && history.length > 0;
+    const context = hasHistory ? ` (with ${history.length} previous messages)` : '';
+    return `I understand you're asking about: "${message}"${context}. As an AI coding assistant, I can help with code generation, explanation, debugging, and refactoring. What would you like me to do?`;
   }
 
   async isAvailable(): Promise<boolean> {

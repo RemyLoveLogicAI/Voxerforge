@@ -20,7 +20,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@voxforge/core": "workspace:*"
+    "@voxforge/core": "*"
   },
   "devDependencies": {
     "@types/node": "^20.10.0",

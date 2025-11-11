@@ -13,9 +13,9 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "@voxforge/core": "workspace:*",
-    "@voxforge/voice": "workspace:*",
-    "@voxforge/ai": "workspace:*",
+    "@voxforge/core": "*",
+    "@voxforge/voice": "*",
+    "@voxforge/ai": "*",
     "@monaco-editor/react": "^4.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

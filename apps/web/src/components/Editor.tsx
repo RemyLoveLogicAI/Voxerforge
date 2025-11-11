@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MonacoEditor from '@monaco-editor/react';
 import { VoxForgeContext } from '@voxforge/core';
 import './Editor.css';

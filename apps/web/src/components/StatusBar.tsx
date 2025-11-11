@@ -1,4 +1,4 @@
-import { VoxForgeContext, IDEMode } from '@voxforge/core';
+import { VoxForgeContext } from '@voxforge/core';
 import './StatusBar.css';
 
 interface StatusBarProps {

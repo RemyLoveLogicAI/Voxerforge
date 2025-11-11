@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { VoxForgeContext, Platform, IDEMode } from '@voxforge/core';
-import { WebSpeechRecognition, VoiceCommandProcessor } from '@voxforge/voice';
 import { MockAIAssistant, AIRequestManager } from '@voxforge/ai';
 import Editor from './components/Editor';
 import VoiceControl from './components/VoiceControl';
@@ -39,7 +38,9 @@ function App() {
     provider: 'mock' as any,
     model: 'mock-model'
   }));
-  const [aiManager] = useState(() => new AIRequestManager(aiAssistant));
+
+  // AI manager for handling requests
+  useState(() => new AIRequestManager(aiAssistant));
 
   useEffect(() => {
     // Set up event listeners

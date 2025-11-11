@@ -1,0 +1,63 @@
+# Example VoxForge Configuration
+# Copy this file to ~/.voxforge/config.yaml or .voxforge/config.yaml in your project
+
+models:
+  profiles:
+    - name: default
+      description: Balanced profile using local Ollama models
+      fastDraft:
+        provider: ollama
+        modelId: llama3.1
+        temperature: 0.7
+        maxTokens: 2048
+      deepRefactor:
+        provider: ollama
+        modelId: qwen2.5-coder
+        temperature: 0.3
+        maxTokens: 4096
+      testGenerator:
+        provider: ollama
+        modelId: codellama:7b
+        temperature: 0.3
+        maxTokens: 4096
+      explainer:
+        provider: ollama
+        modelId: llama3.1
+        temperature: 0.7
+        maxTokens: 2048
+  
+  defaultProfile: default
+
+voice:
+  enabled: true
+  # wakeWord: "hey vox"  # Uncomment to enable wake word
+  pushToTalk: false
+  language: en-US
+  subtitles: true
+
+terminal:
+  defaultShell: bash
+  aiCommands: true
+
+mcp:
+  servers:
+    # Example MCP servers - uncomment and configure as needed
+    # - name: github
+    #   command: npx
+    #   args: ["-y", "@modelcontextprotocol/server-github"]
+    #   env:
+    #     GITHUB_TOKEN: ${GITHUB_TOKEN}
+    
+    # - name: filesystem
+    #   command: npx
+    #   args: ["-y", "@modelcontextprotocol/server-filesystem", "/workspace"]
+
+remote:
+  enabled: false
+  encryption: true
+  # relayUrl: wss://relay.voxforge.dev
+
+safety:
+  requireConfirmation: true
+  autoBackup: true
+  maxRollbackDepth: 50

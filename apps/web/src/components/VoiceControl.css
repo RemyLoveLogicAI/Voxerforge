@@ -1,0 +1,40 @@
+.voice-control {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.voice-toggle {
+  background-color: #3e3e42;
+  color: #cccccc;
+  border: 1px solid #555555;
+}
+
+.voice-toggle.active {
+  background-color: #1e40af;
+  color: white;
+  border-color: #1e40af;
+}
+
+.voice-activate {
+  background-color: #2d2d30;
+  color: #cccccc;
+  border: 1px solid #555555;
+  animation: none;
+}
+
+.voice-activate.listening {
+  background-color: #dc2626;
+  color: white;
+  border-color: #dc2626;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}

@@ -1,0 +1,128 @@
+.command-palette-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.command-palette {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  max-width: 40rem;
+  background-color: #252526;
+  border: 1px solid #3e3e42;
+  border-radius: 0.5rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  z-index: 1000;
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateX(-50%) translateY(-20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+}
+
+.command-palette-search {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid #3e3e42;
+  gap: 0.75rem;
+}
+
+.command-palette-search-icon {
+  font-size: 1.25rem;
+}
+
+.command-palette-input {
+  flex: 1;
+  background: none;
+  border: none;
+  color: #cccccc;
+  font-size: 1rem;
+  outline: none;
+}
+
+.command-palette-input::placeholder {
+  color: #6a6a6a;
+}
+
+.command-palette-results {
+  max-height: 24rem;
+  overflow-y: auto;
+}
+
+.command-palette-empty {
+  padding: 2rem;
+  text-align: center;
+  color: #6a6a6a;
+}
+
+.command-palette-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+
+.command-palette-item:hover,
+.command-palette-item.selected {
+  background-color: #2a2d2e;
+}
+
+.command-palette-item-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.command-palette-category {
+  font-size: 0.75rem;
+  color: #6a6a6a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.command-palette-description {
+  color: #cccccc;
+  font-size: 0.875rem;
+}
+
+.command-palette-shortcut {
+  font-size: 0.75rem;
+  color: #6a6a6a;
+  background-color: #3e3e42;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+}
+
+@media (max-width: 768px) {
+  .command-palette {
+    width: 95%;
+  }
+}

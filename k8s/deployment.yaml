@@ -1,0 +1,117 @@
+# Kubernetes deployment configuration for VoxForge Server
+
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: voxforge
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: voxforge-config
+  namespace: voxforge
+data:
+  NODE_ENV: "production"
+  PORT: "4000"
+  LOG_LEVEL: "info"
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: voxforge-secrets
+  namespace: voxforge
+type: Opaque
+stringData:
+  DATABASE_URL: "postgresql://user:password@postgres:5432/voxforge"
+  JWT_SECRET: "your-super-secret-jwt-key"
+  REDIS_URL: "redis://redis:6379"
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: voxforge-server
+  namespace: voxforge
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: voxforge-server
+  template:
+    metadata:
+      labels:
+        app: voxforge-server
+    spec:
+      containers:
+      - name: server
+        image: voxforge/server:latest
+        ports:
+        - containerPort: 4000
+        envFrom:
+        - configMapRef:
+            name: voxforge-config
+        - secretRef:
+            name: voxforge-secrets
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
+        livenessProbe:
+          httpGet:
+            path: /health
+            port: 4000
+          initialDelaySeconds: 30
+          periodSeconds: 10
+        readinessProbe:
+          httpGet:
+            path: /health
+            port: 4000
+          initialDelaySeconds: 5
+          periodSeconds: 5
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: voxforge-server
+  namespace: voxforge
+spec:
+  selector:
+    app: voxforge-server
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 4000
+  type: LoadBalancer
+
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: voxforge-server-hpa
+  namespace: voxforge
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: voxforge-server
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70
+  - type: Resource
+    resource:
+      name: memory
+      target:
+        type: Utilization
+        averageUtilization: 80

@@ -1,0 +1,263 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #1e1e1e;
+  color: #d4d4d4;
+}
+
+.main-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background: #252526;
+  border-bottom: 1px solid #3c3c3c;
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.header-title h1 {
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.logo {
+  font-size: 1.5rem;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.btn-primary {
+  background: #0e639c;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #1177bb;
+}
+
+.btn-primary.active {
+  background: #c5000b;
+}
+
+.btn-secondary {
+  background: #3c3c3c;
+  color: #d4d4d4;
+}
+
+.btn-secondary:hover {
+  background: #505050;
+}
+
+/* Voice Panel */
+.voice-panel {
+  width: 300px;
+  background: #252526;
+  border-right: 1px solid #3c3c3c;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.voice-status {
+  text-align: center;
+  padding: 1rem;
+  background: #1e1e1e;
+  border-radius: 8px;
+}
+
+.voice-indicator {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  background: #3c3c3c;
+}
+
+.voice-indicator.active {
+  background: #c5000b;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.transcript-box {
+  flex: 1;
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.transcript-box h3 {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #858585;
+}
+
+.transcript-text {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.action-badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  background: #0e639c;
+  color: white;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Editor Panel */
+.editor-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: #1e1e1e;
+}
+
+.editor-tabs {
+  display: flex;
+  background: #252526;
+  border-bottom: 1px solid #3c3c3c;
+  padding: 0 1rem;
+}
+
+.tab {
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: none;
+  color: #858585;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.tab.active {
+  color: #d4d4d4;
+  border-bottom-color: #0e639c;
+}
+
+.editor-content {
+  flex: 1;
+  padding: 1.5rem;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.875rem;
+  overflow: auto;
+}
+
+.placeholder {
+  color: #858585;
+  text-align: center;
+  padding: 3rem;
+}
+
+/* Terminal Panel */
+.terminal-panel {
+  height: 250px;
+  background: #1e1e1e;
+  border-top: 1px solid #3c3c3c;
+  display: flex;
+  flex-direction: column;
+}
+
+.terminal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  background: #252526;
+  border-bottom: 1px solid #3c3c3c;
+}
+
+.terminal-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.terminal-content {
+  flex: 1;
+  padding: 1rem;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+  font-size: 0.875rem;
+  overflow: auto;
+  background: #000;
+  color: #0f0;
+}
+
+.terminal-line {
+  margin-bottom: 0.25rem;
+}
+
+.terminal-prompt {
+  color: #0e639c;
+}
+
+/* AI Commands Info */
+.ai-commands {
+  padding: 1rem;
+  background: #1e1e1e;
+  border-radius: 8px;
+}
+
+.ai-commands h4 {
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #858585;
+}
+
+.ai-commands ul {
+  list-style: none;
+  font-size: 0.75rem;
+  line-height: 1.8;
+}
+
+.ai-commands code {
+  background: #3c3c3c;
+  padding: 0.125rem 0.25rem;
+  border-radius: 2px;
+  font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+}

@@ -1,0 +1,279 @@
+// Prisma schema for VoxForge IDE
+// Database: PostgreSQL (production) / SQLite (development)
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  username      String    @unique
+  passwordHash  String
+  fullName      String?
+  avatarUrl     String?
+  role          Role      @default(USER)
+  
+  // Subscription
+  plan          Plan      @default(FREE)
+  planExpiry    DateTime?
+  
+  // Metadata
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+  
+  // Relations
+  projects      Project[]
+  sessions      Session[]
+  apiKeys       ApiKey[]
+  preferences   UserPreference?
+  usage         UsageRecord[]
+  
+  @@index([email])
+  @@index([username])
+}
+
+enum Role {
+  USER
+  ADMIN
+  ENTERPRISE
+}
+
+enum Plan {
+  FREE
+  PRO
+  TEAM
+  ENTERPRISE
+}
+
+// Project model
+model Project {
+  id            String    @id @default(uuid())
+  name          String
+  description   String?
+  path          String
+  language      String
+  framework     String?
+  
+  // Owner
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Configuration
+  config        Json?
+  
+  // AI Context
+  embeddings    Embedding[]
+  
+  // Metadata
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastAccessedAt DateTime?
+  
+  // Relations
+  sessions      Session[]
+  checkpoints   Checkpoint[]
+  
+  @@index([userId])
+  @@index([updatedAt])
+}
+
+// Session model for active coding sessions
+model Session {
+  id            String    @id @default(uuid())
+  
+  // User and project
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  projectId     String?
+  project       Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  
+  // Session data
+  deviceType    String    // web, desktop, mobile, vr
+  deviceId      String
+  isActive      Boolean   @default(true)
+  
+  // Metadata
+  createdAt     DateTime  @default(now())
+  lastActivityAt DateTime @default(now())
+  endedAt       DateTime?
+  
+  // Relations
+  activities    Activity[]
+  
+  @@index([userId])
+  @@index([projectId])
+  @@index([isActive])
+}
+
+// Activity tracking
+model Activity {
+  id            String    @id @default(uuid())
+  
+  sessionId     String
+  session       Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  
+  type          ActivityType
+  action        String?   // AI action type
+  input         String?
+  output        String?
+  success       Boolean
+  
+  // Metrics
+  duration      Int?      // milliseconds
+  tokensUsed    Int?
+  cost          Float?
+  
+  createdAt     DateTime  @default(now())
+  
+  @@index([sessionId])
+  @@index([type])
+  @@index([createdAt])
+}
+
+enum ActivityType {
+  VOICE_COMMAND
+  AI_ACTION
+  CODE_EDIT
+  FILE_OPERATION
+  TERMINAL_COMMAND
+  GIT_OPERATION
+}
+
+// Checkpoint for rollback
+model Checkpoint {
+  id            String    @id @default(uuid())
+  
+  projectId     String
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  description   String
+  fileSnapshots Json      // Map of file paths to content
+  
+  createdAt     DateTime  @default(now())
+  
+  @@index([projectId])
+  @@index([createdAt])
+}
+
+// API Keys for programmatic access
+model ApiKey {
+  id            String    @id @default(uuid())
+  
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  name          String
+  keyHash       String    @unique
+  lastUsedAt    DateTime?
+  expiresAt     DateTime?
+  
+  createdAt     DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([keyHash])
+}
+
+// User preferences
+model UserPreference {
+  id            String    @id @default(uuid())
+  
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Voice settings
+  voiceEnabled  Boolean   @default(true)
+  voiceLanguage String    @default("en-US")
+  wakeWord      String?
+  pushToTalk    Boolean   @default(false)
+  
+  // Model preferences
+  defaultProfile String   @default("default")
+  modelConfig   Json?
+  
+  // UI preferences
+  theme         String    @default("dark")
+  fontSize      Int       @default(14)
+  keymap        String    @default("vscode")
+  
+  // Terminal
+  defaultShell  String    @default("bash")
+  
+  updatedAt     DateTime  @updatedAt
+}
+
+// Usage tracking for billing
+model UsageRecord {
+  id            String    @id @default(uuid())
+  
+  userId        String
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Usage metrics
+  tokensUsed    Int
+  cost          Float
+  action        String
+  model         String
+  
+  createdAt     DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([createdAt])
+}
+
+// Vector embeddings for RAG
+model Embedding {
+  id            String    @id @default(uuid())
+  
+  projectId     String
+  project       Project   @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  
+  // Content
+  filePath      String
+  chunkIndex    Int
+  content       String
+  
+  // Vector
+  embedding     Float[]   // Vector embedding
+  
+  // Metadata
+  language      String
+  lastUpdated   DateTime  @default(now())
+  
+  @@index([projectId])
+  @@index([filePath])
+}
+
+// Collaboration (for future team features)
+model Collaboration {
+  id            String    @id @default(uuid())
+  
+  projectId     String
+  invitedEmail  String
+  role          CollabRole
+  status        CollabStatus @default(PENDING)
+  
+  invitedAt     DateTime  @default(now())
+  acceptedAt    DateTime?
+  
+  @@unique([projectId, invitedEmail])
+}
+
+enum CollabRole {
+  VIEWER
+  EDITOR
+  ADMIN
+}
+
+enum CollabStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}

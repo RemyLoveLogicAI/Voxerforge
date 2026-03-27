@@ -1,0 +1,23 @@
+{
+  "name": "@voxforge/ai-orchestrator",
+  "version": "0.1.0",
+  "description": "Multi-model AI routing and orchestration for VoxForge IDE",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "test": "jest",
+    "lint": "eslint src --ext .ts"
+  },
+  "keywords": ["voxforge", "ai", "orchestrator"],
+  "license": "MIT",
+  "dependencies": {
+    "@voxforge/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.0"
+  }
+}

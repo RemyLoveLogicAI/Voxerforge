@@ -1,0 +1,44 @@
+{
+  "name": "voxforge-ide",
+  "version": "0.1.0",
+  "description": "Voice-to-development AI IDE - Multi-platform voice-driven development environment",
+  "private": true,
+  "workspaces": [
+    "packages/*",
+    "apps/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev --parallel",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "clean": "turbo run clean && rm -rf node_modules",
+    "web:dev": "npm run dev --workspace=@voxforge/web",
+    "desktop:dev": "npm run dev --workspace=@voxforge/desktop",
+    "mobile:dev": "npm run dev --workspace=@voxforge/mobile"
+  },
+  "devDependencies": {
+    "turbo": "^1.11.0",
+    "typescript": "^5.3.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.10.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RemyLoveLogicAI/Voxerforge"
+  },
+  "keywords": [
+    "ide",
+    "voice-coding",
+    "ai-assistant",
+    "multi-platform",
+    "webxr",
+    "pwa",
+    "voice-to-code"
+  ],
+  "license": "MIT"
+}
